@@ -8,7 +8,7 @@ A physics-based projectile simulator built from scratch in **C++17**, featuring 
 
 ## Demo
 
-<video src="docs/simulation.mov" width="700" autoplay loop muted></video>
+<video src="docs/simulation.mp4" width="700" autoplay loop muted></video>
 
 *Real-time simulation showing a projectile launched with aerodynamic drag. Notice how drag reduces range and creates trajectory asymmetry compared to a vacuum launch.*
 
