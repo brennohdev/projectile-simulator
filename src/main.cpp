@@ -20,7 +20,7 @@ int main() {
     DragParams drag = {1.225, 0.47, 0.01};
     SimulationConfig config = {0.001, 20.0, drag};
 
-    CsvExporter exporter("output/trajectory.csv");
+    CsvExporter exporter("output/with_drag.csv");
 
     Simulation simulation(config);
     simulation.run(projectile, exporter);

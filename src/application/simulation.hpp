@@ -7,7 +7,7 @@ struct SimulationConfig
 {
     double dt;
     double max_time;
-    DragParams drag;
+    DragParams drag_params;
 };
 
 class Simulation

@@ -11,7 +11,7 @@ void Simulation::run(Projectile& projectile, IExporter& exporter) {
     while (projectile.is_active() && time < config_.max_time) {
         exporter.write(time, projectile.position());
         projectile.apply_force(gravity(projectile.mass()));
-        projectile.apply_force(drag(projectile.velocity(), config_.drag));
+        projectile.apply_force(drag(projectile.velocity(), config_.drag_params));
 
         projectile.update(config_.dt);
         time += config_.dt;
