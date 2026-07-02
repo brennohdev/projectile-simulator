@@ -1,6 +1,7 @@
 #pragma once
 #include "../domain/forces.hpp"
 #include "../domain/projectile.hpp"
+#include "i_exporter.hpp"
 
 struct SimulationConfig
 {
@@ -13,7 +14,7 @@ class Simulation
 {
     public:
         Simulation(const SimulationConfig& config);
-        void run(Projectile& projectile /* ,exporter */);
+        void run(Projectile& projectile, IExporter& exporter);
 
         private:
         SimulationConfig config_;

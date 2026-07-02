@@ -8,5 +8,5 @@ struct DragParams
     double cross_section;
 };
 
-Vector2 gravity(double mass);
-Vector2 drag(const Vector2& velocity, const DragParams& params);
+Vec2 gravity(double mass);
+Vec2 drag(const Vec2& velocity, const DragParams& params);

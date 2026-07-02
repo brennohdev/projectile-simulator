@@ -4,21 +4,21 @@
 /**
 *@brief: Represents a 2D vector for physics calculations.
 */
-struct Vector2 {
+struct Vec2 {
     double x;
     double y;
 
-    Vector2 operator*(double scalar) const
+    Vec2 operator*(double scalar) const
     {
         return {x * scalar, y*scalar};
     };
 
-    Vector2 operator+(const Vector2& other) const
+    Vec2 operator+(const Vec2& other) const
     {
         return {x + other.x, y + other.y};
     };
 
-    Vector2 operator-(const Vector2& other) const
+    Vec2 operator-(const Vec2& other) const
     {
         return {x - other.x, y - other.y};
     };
@@ -32,7 +32,7 @@ struct Vector2 {
         return sqrt(x * x + y * y);
     }
 
-    Vector2 normalize() const
+    Vec2 normalize() const
     {
         double mag = magnitude();
         if (mag==0) return {0,0};

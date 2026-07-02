@@ -7,11 +7,11 @@ constexpr double G = 9.81;
 @brief: Simple function that implements the Gravitacional Force calculation
 @return: Resultant Vector 2D
 */
-Vector2 gravity(double mass) {
+Vec2 gravity(double mass) {
     return {0, -mass * G};
 }
 
-Vector2 drag(const Vector2& velocity, const DragParams& params)
+Vec2 drag(const Vec2& velocity, const DragParams& params)
 {
     double speed = velocity.magnitude();
 
@@ -23,7 +23,7 @@ Vector2 drag(const Vector2& velocity, const DragParams& params)
         * params.cross_section
         * speed * speed;
 
-    Vector2 direction = velocity.normalize();
+    Vec2 direction = velocity.normalize();
 
     return direction * (-force_magnitude);
 }
