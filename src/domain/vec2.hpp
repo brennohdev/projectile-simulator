@@ -1,6 +1,8 @@
 #pragma once
 #include <cmath>
 
+namespace sim {
+
 /**
 *@brief: Represents a 2D vector for physics calculations.
 */
@@ -39,3 +41,5 @@ struct Vec2 {
         return {x/mag, y/mag};
     }
 };
+
+}

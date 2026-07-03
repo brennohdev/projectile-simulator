@@ -2,6 +2,8 @@
 #include "simulation.hpp"
 #include "../domain/forces.hpp"
 
+namespace sim {
+
 Simulation::Simulation(const SimulationConfig& config)
     : config_(config) {}
 
@@ -18,3 +20,5 @@ void Simulation::run(Projectile& projectile, IExporter& exporter) {
     }
     exporter.close();
 }
+
+} 

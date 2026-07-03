@@ -3,13 +3,17 @@
 #include <fstream>
 #include <string>
 
+namespace sim {
+
 class CsvExporter : public IExporter
 {
-    public:
+public:
     explicit CsvExporter(const std::string& path);
     void write(double time, const Vec2& position) override;
     void close() override;
 
-    private:
+private:
     std::ofstream file_;
 };
+
+}

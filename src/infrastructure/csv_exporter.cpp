@@ -1,10 +1,12 @@
 #include "csv_exporter.hpp"
 
+namespace sim {
+
 CsvExporter::CsvExporter(const std::string& path)
     : file_(path)
-    {
-        file_ << "time,x,y" << "\n";
-    }
+{
+    file_ << "time,x,y" << "\n";
+}
 
 void CsvExporter::write(double time, const Vec2& position)
 {
@@ -15,3 +17,5 @@ void CsvExporter::close()
 {
     file_.close();
 }
+
+} 

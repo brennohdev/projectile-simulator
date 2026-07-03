@@ -5,9 +5,17 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-find_package(raylib REQUIRED)
+# Fetch raylib automatically for reproducibility
+include(FetchContent)
+FetchContent_Declare(
+    raylib
+    GIT_REPOSITORY https://github.com/raysan5/raylib.git
+    GIT_TAG 5.0
+    GIT_SHALLOW TRUE
+)
+FetchContent_MakeAvailable(raylib)
 
-# Executável 1: gera CSV
+# Executable 1: CSV output
 add_executable(app
     src/main.cpp
     src/domain/projectile.cpp
@@ -17,7 +25,7 @@ add_executable(app
 )
 target_include_directories(app PRIVATE src)
 
-# Executável 2: visualização em tempo real
+# Executable 2: real-time visualization
 add_executable(sim_visual
     src/main_visual.cpp
     src/domain/projectile.cpp

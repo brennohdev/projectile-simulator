@@ -5,6 +5,8 @@
 #include <cmath>
 
 int main() {
+    using namespace sim;
+
     const int screenWidth = 1200;
     const int screenHeight = 600;
     InitWindow(screenWidth, screenHeight, "Projectile Comparison: Drag vs Vacuum");

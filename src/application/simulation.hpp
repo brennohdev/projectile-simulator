@@ -3,6 +3,8 @@
 #include "../domain/projectile.hpp"
 #include "i_exporter.hpp"
 
+namespace sim {
+
 struct SimulationConfig
 {
     double dt;
@@ -12,10 +14,12 @@ struct SimulationConfig
 
 class Simulation
 {
-    public:
-        Simulation(const SimulationConfig& config);
-        void run(Projectile& projectile, IExporter& exporter);
+public:
+    Simulation(const SimulationConfig& config);
+    void run(Projectile& projectile, IExporter& exporter);
 
-        private:
-        SimulationConfig config_;
+private:
+    SimulationConfig config_;
 };
+
+} 

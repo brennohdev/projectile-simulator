@@ -1,6 +1,8 @@
 #pragma once
 #include "vec2.hpp"
 
+namespace sim {
+
 class Projectile {
 public:
     Projectile(Vec2 position, Vec2 velocity, double mass);
@@ -19,3 +21,5 @@ private:
     Vec2 accumulated_force_;
     double mass_;
 };
+
+} 

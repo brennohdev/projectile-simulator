@@ -1,8 +1,6 @@
 # Projectile Simulation with Aerodynamic Drag
 
-A physics-based projectile simulator built from scratch in **C++17**, featuring aerodynamic drag modeling, real-time visualization with Raylib, and comparative analysis between vacuum and air trajectories.
-
-> **This project demonstrates:** Computational physics, Clean Architecture in C++, numerical integration (Euler method), and software engineering principles applied to robotics foundations.
+A projectile simulator in C++17 that compares trajectories with and without air resistance. Built from scratch as my first C++ project — part of a self-directed path toward robotics.
 
 ---
 
@@ -10,169 +8,89 @@ A physics-based projectile simulator built from scratch in **C++17**, featuring 
 
 https://github.com/user-attachments/assets/fe406f09-74dd-45a2-9c49-09eb126e5d05
 
-*Real-time simulation showing a projectile launched with aerodynamic drag. Notice how drag reduces range and creates trajectory asymmetry compared to a vacuum launch.*
-
 ---
 
 ## Results
 
-### Trajectory Comparison: Drag vs Vacuum
-
 ![Comparison Plot](docs/comparison.png)
 
-| Metric | With Drag (Air) | Without Drag (Vacuum) | Difference |
-|--------|----------------|----------------------|------------|
+| Metric | With Drag | Without Drag | Difference |
+|--------|-----------|--------------|------------|
 | Max Height | ~42 m | ~63.7 m | -34% |
 | Range | ~109 m | ~163 m | -33% |
 | Flight Time | ~4.6 s | ~7.2 s | -36% |
-| Peak Time | ~2.69 s | ~3.6 s | Asymmetric vs Symmetric |
+| Peak Time | ~2.69 s | ~3.6 s | -25% |
 
-**Key Observations:**
-- The vacuum trajectory is a perfect parabola (symmetric)
-- Air resistance creates an asymmetric curve — the descent is steeper than the ascent
-- Drag force grows with velocity² — meaning it dominates at high speeds and diminishes as the projectile slows
-- The horizontal velocity continuously decreases (unlike vacuum where it's constant)
+The drag case is noticeably asymmetric — the projectile climbs slower and falls steeper because drag is proportional to v², so it hits hardest at the beginning when speed is highest.
 
 ---
 
-## Physics Model
+## Physics
 
-### Forces Applied
-
-**Gravity:**
+Gravity pulls down, drag opposes velocity:
 
 $$\vec{F}_{gravity} = -m \cdot g \cdot \hat{j}$$
 
-**Aerodynamic Drag:**
+$$\vec{F}_{drag} = -\frac{1}{2} \, \rho \, C_d \, A \, |\vec{v}|^2 \, \hat{v}$$
 
-$$\vec{F}_{drag} = -\frac{1}{2} \cdot \rho \cdot C_d \cdot A \cdot |\vec{v}|^2 \cdot \hat{v}$$
+Parameters used: $\rho = 1.225$ kg/m³, $C_d = 0.47$ (sphere), $A = 0.01$ m².
 
-Where:
-- $\rho$ = Air density (1.225 kg/m³ at sea level)
-- $C_d$ = Drag coefficient (0.47 for a sphere)
-- $A$ = Cross-sectional area (0.01 m²)
-- $|\vec{v}|^2$ = Speed squared (quadratic growth)
-- $\hat{v}$ = Unit velocity vector (drag opposes motion)
-
-### Numerical Integration (Euler Method)
-
-$$\vec{a} = \frac{\vec{F}_{total}}{m}$$
-
-$$\vec{v}_{n+1} = \vec{v}_n + \vec{a} \cdot \Delta t$$
-
-$$\vec{p}_{n+1} = \vec{p}_n + \vec{v} \cdot \Delta t$$
-
-With $\Delta t = 0.001s$ for high precision.
+Integration is forward Euler with $\Delta t = 0.001$s.
 
 ---
 
-## Architecture
-
-The project follows **Clean Architecture** principles:
+## Project Structure
 
 ```
 src/
-├── domain/                ← Pure logic, zero external dependencies
-│   ├── vec2.hpp           ← Value Object: 2D vector with operator overloading
-│   ├── projectile.hpp/cpp ← Entity: projectile state + behavior
-│   └── forces.hpp/cpp     ← Domain Service: gravity & drag calculations
-├── application/           ← Use Cases / Orchestration
-│   ├── i_exporter.hpp     ← Port: abstract export interface
-│   └── simulation.hpp/cpp ← Use Case: simulation loop
-├── infrastructure/        ← I/O Adapters
-│   └── csv_exporter.hpp/cpp ← Adapter: writes trajectory to CSV
-├── main.cpp               ← Composition Root (CSV output)
-└── main_visual.cpp        ← Composition Root (Raylib visualization)
+├── domain/              # Vec2, Projectile, forces (gravity + drag)
+├── application/         # Simulation loop, IExporter interface
+├── infrastructure/      # CSV file writer
+├── main.cpp             # Runs simulation → CSV
+└── main_visual.cpp      # Runs simulation → Raylib window
 ```
 
-### Design Decisions
-
-- **Value Objects** (`Vec2`): Operator overloading for natural math syntax
-- **Entities** (`Projectile`): Encapsulated state with private members
-- **Dependency Inversion**: `Simulation` depends on `IExporter` interface, not concrete implementation
-- **Separation of Physics from I/O**: Domain layer has zero knowledge of file system or graphics
+The domain layer has no dependencies on I/O. The simulation talks to an abstract `IExporter`, and the concrete CSV writer lives in infrastructure. This separation made it easy to add the Raylib visualizer without touching physics code.
 
 ---
 
-## Tech Stack
+## Building
 
-| Technology | Purpose |
-|-----------|---------|
-| C++17 | Core language |
-| CMake | Build system |
-| Raylib | Real-time 2D visualization |
-| Python + Matplotlib | Static plot generation |
-| Euler Integration | Numerical method |
-
----
-
-## Getting Started
-
-### Prerequisites
-
-- C++17 compiler (Clang, GCC)
-- CMake 3.20+
-- Raylib (`brew install raylib` on macOS)
-- Python 3 with pandas & matplotlib (for plots)
-
-### Build & Run
+Requires a C++17 compiler and CMake 3.20+. Raylib is fetched automatically.
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/projectile-sim.git
-cd projectile-sim
-
 cmake -B build
 cmake --build build
 
-# CSV simulation
 mkdir -p output
-./build/app
-
-# Visual simulation (real-time)
-./build/sim_visual
-
-# Generate plots
-python scripts/plot_trajectory.py
+./build/app           # outputs CSV
+./build/sim_visual    # opens visualization window
 ```
+
+For the plot: `python scripts/plot_trajectory.py` (needs pandas + matplotlib).
 
 ---
 
 ## What I Learned
 
-This was my first C++ project, built as Checkpoint 1 of a robotics learning roadmap:
+This was my first time writing C++. I came from TypeScript/Python.
 
-- **C++ fundamentals:** Compilation model, headers/source separation, linking, const correctness
-- **OOP in C++:** struct vs class, operator overloading, virtual interfaces
-- **Physics simulation:** Translating equations into code, numerical integration, timestep selection
-- **Software architecture:** Clean Architecture applied to a non-web domain
-- **Debugging:** Name shadowing bugs, linker errors, CMake configuration
+Things that tripped me up: the compilation model (headers vs source files, why you get linker errors), name shadowing between variables and functions (had `drag` as both a variable and a function — compiler was not happy), and figuring out CMake.
 
-Coming from TypeScript/Python — what surprised me:
-- The manual memory model forces you to understand what you're writing
-- Operator overloading makes math code beautiful (`velocity + acceleration * dt`)
-- Compilation catches entire categories of bugs before runtime
-- Header/source separation is a powerful organizational tool
+Things I liked: operator overloading makes physics code read like math (`velocity + acceleration * dt`), and the compiler catches bugs that would be runtime errors in Python.
 
 ---
 
 ## Roadmap
 
-This project is part of a structured path toward autonomous robotics:
-
-- [x] **Checkpoint 1:** Projectile with aerodynamic drag ← You are here
-- [ ] **Checkpoint 2:** A* Pathfinding
-- [ ] **Checkpoint 3:** Differential robot with PID control
-- [ ] **Checkpoint 4:** AUV (underwater vehicle) simulation
-- [ ] **Checkpoint 5:** ROS 2 + Gazebo integration
-- [ ] **Checkpoint 6:** Drone hover control
-- [ ] **Checkpoint 7:** Autonomous drone racing with Deep RL
+This is checkpoint 1 in a robotics learning path. Next up: A* pathfinding, then PID control for a differential robot.
 
 ---
 
-## License
+## Disclosure
 
-MIT
+README written with AI assistance. Code is mine — written while studying physics simulation and C++ fundamentals through courses and documentation.
 
 ---
 
-Built with curiosity and physics.
+License: MIT

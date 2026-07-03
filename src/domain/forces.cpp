@@ -1,6 +1,8 @@
 #include "forces.hpp"
 #include "vec2.hpp"
 
+namespace sim {
+
 constexpr double G = 9.81;
 
 /**
@@ -26,4 +28,6 @@ Vec2 drag(const Vec2& velocity, const DragParams& params)
     Vec2 direction = velocity.normalize();
 
     return direction * (-force_magnitude);
+}
+
 }
